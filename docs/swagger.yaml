@@ -1,0 +1,108 @@
+definitions:
+  controllers.ApiError:
+    properties:
+      error:
+        type: string
+    type: object
+  controllers.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/signin:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.LoginResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ApiError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ApiError'
+      summary: signin the user, get jwt token
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ApiError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ApiError'
+      summary: signup the user into the system
+      tags:
+      - auth
+  /auth/users:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ApiError'
+      summary: get list of registred users (debug only)
+      tags:
+      - auth
+swagger: "2.0"
