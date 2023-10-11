@@ -38,6 +38,7 @@ func main() {
 
 func AutoMigrateDb(db *gorm.DB) {
   db.AutoMigrate(&models.User{})
+  db.AutoMigrate(&models.Category{})
 }
 
 func setupHandlers(r *gin.Engine, db *gorm.DB) {
@@ -61,7 +62,10 @@ func setupHandlers(r *gin.Engine, db *gorm.DB) {
     auth.GET("/users", controllers.GetAllUsers)
   }
 
-  categories := v1.Group("/categories")
+  categories := v1.Group("/categories", func(c *gin.Context) {
+    c.Set("CategoryService", database.NewCategoryGormService(db))
+    c.Next()
+  })
   categories.GET("", controllers.GetAllCategories)
   categories.GET(":id", controllers.GetCategoryById)
   categories.POST("", controllers.AddCategory)
