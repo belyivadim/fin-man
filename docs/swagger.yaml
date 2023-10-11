@@ -4,6 +4,13 @@ definitions:
       error:
         type: string
     type: object
+  controllers.LoginPayload:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   controllers.LoginResponse:
     properties:
       token:
@@ -45,6 +52,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: Login Payload
+        in: body
+        name: login_payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginPayload'
       produces:
       - application/json
       responses:

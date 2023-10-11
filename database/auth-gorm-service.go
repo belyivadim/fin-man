@@ -20,10 +20,10 @@ func (service *AuthGormService) CreateUserRecord(user *models.User) error {
   return service.db.Create(&user).Error
 }
 
-func (service *AuthGormService) GetUserByEmail(email string) (models.User, error) {
+func (service *AuthGormService) GetUserByEmail(email string) (*models.User, error) {
   var user models.User
   result := service.db.Where("email = ?", email).First(&user)
-  return user, result.Error
+  return &user, result.Error
 }
 
 func (service *AuthGormService) GetAllUsers() ([]models.User, error) {

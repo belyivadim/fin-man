@@ -87,6 +87,7 @@ func Signup(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
+// @Param login_payload body LoginPayload true "Login Payload"
 // @Success 200 {object}    LoginResponse
 // @Failure 401 {object}    ApiError
 // @Failure 500 {object}    ApiError
